@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { getStockThunk } from '../redux/stock'
+import { addZero } from '../utils/addZero';
+import { getColor } from '../utils/getColor';
 
 class SingleStock extends Component {
   constructor(props){
@@ -23,9 +25,19 @@ class SingleStock extends Component {
         )
     } else {
       const { symbol, companyName, primaryExchange, open, close, high, low, latestPrice, change, changePercent, peRatio, week52High, week52Low} = this.props.quote
+      const colorClass = getColor(change)
       return (
           <div>
-            <h1>{companyName} ({symbol})</h1>
+            <h1>{companyName}</h1>
+            <h3>{primaryExchange}: {symbol}</h3>
+            <h3>{latestPrice} <span className={colorClass}>({change}) {changePercent}%</span></h3>
+            <h3>Open:{open}</h3>
+            <h3>Close:{close}</h3>
+            <h3>High:{high}</h3>
+            <h3>Low:{low}</h3>
+            <h3>P/E:{peRatio}</h3>
+            <h3>52-wk high:{week52High}</h3>
+            <h3>52-wk low:{week52Low}</h3>
           </div>
       )
     }

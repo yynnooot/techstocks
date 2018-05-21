@@ -301,6 +301,10 @@ var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _stock = __webpack_require__(/*! ../redux/stock */ "./client/redux/stock.js");
 
+var _addZero = __webpack_require__(/*! ../utils/addZero */ "./client/utils/addZero.js");
+
+var _getColor = __webpack_require__(/*! ../utils/getColor */ "./client/utils/getColor.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -357,16 +361,78 @@ var SingleStock = function (_Component) {
             week52High = _props$quote.week52High,
             week52Low = _props$quote.week52Low;
 
+        var colorClass = (0, _getColor.getColor)(change);
         return _react2.default.createElement(
           'div',
           null,
           _react2.default.createElement(
             'h1',
             null,
-            companyName,
-            ' (',
-            symbol,
-            ')'
+            companyName
+          ),
+          _react2.default.createElement(
+            'h3',
+            null,
+            primaryExchange,
+            ': ',
+            symbol
+          ),
+          _react2.default.createElement(
+            'h3',
+            null,
+            latestPrice,
+            ' ',
+            _react2.default.createElement(
+              'span',
+              { className: colorClass },
+              '(',
+              change,
+              ') ',
+              changePercent,
+              '%'
+            )
+          ),
+          _react2.default.createElement(
+            'h3',
+            null,
+            'Open:',
+            open
+          ),
+          _react2.default.createElement(
+            'h3',
+            null,
+            'Close:',
+            close
+          ),
+          _react2.default.createElement(
+            'h3',
+            null,
+            'High:',
+            high
+          ),
+          _react2.default.createElement(
+            'h3',
+            null,
+            'Low:',
+            low
+          ),
+          _react2.default.createElement(
+            'h3',
+            null,
+            'P/E:',
+            peRatio
+          ),
+          _react2.default.createElement(
+            'h3',
+            null,
+            '52-wk high:',
+            week52High
+          ),
+          _react2.default.createElement(
+            'h3',
+            null,
+            '52-wk low:',
+            week52Low
           )
         );
       }
@@ -426,6 +492,10 @@ var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-type
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
+var _addZero = __webpack_require__(/*! ../utils/addZero */ "./client/utils/addZero.js");
+
+var _getColor = __webpack_require__(/*! ../utils/getColor */ "./client/utils/getColor.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var StockOverview = function StockOverview(props) {
@@ -442,10 +512,7 @@ var StockOverview = function StockOverview(props) {
       changePercent = stock.changePercent,
       change = stock.change;
 
-  var colorClass = void 0;
-  if (change > 0) colorClass = 'red';
-  if (change === 0) colorClass = 'grey';
-  if (change < 0) colorClass = 'green';
+  var colorClass = (0, _getColor.getColor)(change);
 
   return _react2.default.createElement(
     _reactRouterDom.Link,
@@ -461,7 +528,7 @@ var StockOverview = function StockOverview(props) {
       'h5',
       null,
       'Price: $',
-      addZero(latestPrice),
+      (0, _addZero.addZero)(latestPrice),
       ' ',
       _react2.default.createElement(
         'span',
@@ -477,30 +544,26 @@ var StockOverview = function StockOverview(props) {
       'h5',
       null,
       'High: $',
-      addZero(high),
+      (0, _addZero.addZero)(high),
       ' | Low: $',
-      addZero(low)
+      (0, _addZero.addZero)(low)
     ),
     _react2.default.createElement(
       'h5',
       null,
       'Open: $',
-      addZero(open)
+      (0, _addZero.addZero)(open)
     ),
     _react2.default.createElement(
       'h5',
       null,
       'Close: $',
-      addZero(close),
+      (0, _addZero.addZero)(close),
       ' (',
       latestTime,
       ')'
     )
   );
-};
-//function that adds trailing zeros to dollar price
-var addZero = function addZero(num) {
-  return Number.parseFloat(num).toFixed(2);
 };
 
 StockOverview.propTypes = {
@@ -632,6 +695,49 @@ var getStockThunk = exports.getStockThunk = function getStockThunk(ticker) {
       return console.log(err);
     });
   };
+};
+
+/***/ }),
+
+/***/ "./client/utils/addZero.js":
+/*!*********************************!*\
+  !*** ./client/utils/addZero.js ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+//function that adds trailing zeros to dollar price
+var addZero = exports.addZero = function addZero(num) {
+  return Number.parseFloat(num).toFixed(2);
+};
+
+/***/ }),
+
+/***/ "./client/utils/getColor.js":
+/*!**********************************!*\
+  !*** ./client/utils/getColor.js ***!
+  \**********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var getColor = exports.getColor = function getColor(num) {
+  var colorClass = void 0;
+  if (num > 0) colorClass = 'red';
+  if (num === 0) colorClass = 'grey';
+  if (num < 0) colorClass = 'green';
+  return colorClass;
 };
 
 /***/ }),

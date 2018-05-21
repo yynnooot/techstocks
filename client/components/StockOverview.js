@@ -1,15 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-
+import { addZero } from '../utils/addZero';
+import { getColor } from '../utils/getColor';
 const StockOverview = (props) => {
 
   const stock = props.stock.quote;
   const { symbol, companyName, latestPrice, high, low, open, close, latestTime, changePercent, change } = stock;
-  let colorClass;
-  if(change > 0) colorClass = 'red';
-  if(change === 0) colorClass = 'grey';
-  if(change < 0) colorClass = 'green'
+  const colorClass = getColor(change)
 
   return (
     <Link to={`/${symbol}`} className='stock-overview-container'>
@@ -21,8 +19,6 @@ const StockOverview = (props) => {
     </Link>
   )
 }
-//function that adds trailing zeros to dollar price
-const addZero = (num) => Number.parseFloat(num).toFixed(2);
 
 StockOverview.propTypes = {
   stock: PropTypes.object.isRequired
