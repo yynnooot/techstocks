@@ -122,6 +122,38 @@ _reactDom2.default.render(_react2.default.createElement(
 
 /***/ }),
 
+/***/ "./client/components/Chart.js":
+/*!************************************!*\
+  !*** ./client/components/Chart.js ***!
+  \************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Chart = function Chart(props) {
+  return _react2.default.createElement(
+    'div',
+    null,
+    'Chart'
+  );
+};
+
+exports.default = Chart;
+
+/***/ }),
+
 /***/ "./client/components/Home.js":
 /*!***********************************!*\
   !*** ./client/components/Home.js ***!
@@ -299,11 +331,23 @@ var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-type
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
+var _Chart = __webpack_require__(/*! ./Chart */ "./client/components/Chart.js");
+
+var _Chart2 = _interopRequireDefault(_Chart);
+
 var _stock = __webpack_require__(/*! ../redux/stock */ "./client/redux/stock.js");
 
 var _addZero = __webpack_require__(/*! ../utils/addZero */ "./client/utils/addZero.js");
 
+var _addZero2 = _interopRequireDefault(_addZero);
+
 var _getColor = __webpack_require__(/*! ../utils/getColor */ "./client/utils/getColor.js");
+
+var _getColor2 = _interopRequireDefault(_getColor);
+
+var _lastFive = __webpack_require__(/*! ../utils/lastFive */ "./client/utils/lastFive.js");
+
+var _lastFive2 = _interopRequireDefault(_lastFive);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -350,6 +394,8 @@ var SingleStock = function (_Component) {
             symbol = _props$quote.symbol,
             companyName = _props$quote.companyName,
             primaryExchange = _props$quote.primaryExchange,
+            latestSource = _props$quote.latestSource,
+            latestTime = _props$quote.latestTime,
             open = _props$quote.open,
             close = _props$quote.close,
             high = _props$quote.high,
@@ -361,7 +407,8 @@ var SingleStock = function (_Component) {
             week52High = _props$quote.week52High,
             week52Low = _props$quote.week52Low;
 
-        var colorClass = (0, _getColor.getColor)(change);
+        var colorClass = (0, _getColor2.default)(change);
+        console.log((0, _lastFive2.default)(this.props.chart));
         return _react2.default.createElement(
           'div',
           null,
@@ -371,16 +418,17 @@ var SingleStock = function (_Component) {
             companyName
           ),
           _react2.default.createElement(
-            'h3',
+            'h2',
             null,
             primaryExchange,
             ': ',
             symbol
           ),
           _react2.default.createElement(
-            'h3',
+            'h2',
             null,
-            latestPrice,
+            '$',
+            (0, _addZero2.default)(latestPrice),
             ' ',
             _react2.default.createElement(
               'span',
@@ -395,26 +443,33 @@ var SingleStock = function (_Component) {
           _react2.default.createElement(
             'h3',
             null,
-            'Open:',
-            open
+            latestSource,
+            ' ',
+            latestTime
           ),
           _react2.default.createElement(
             'h3',
             null,
-            'Close:',
-            close
+            'Open: $',
+            (0, _addZero2.default)(open)
           ),
           _react2.default.createElement(
             'h3',
             null,
-            'High:',
-            high
+            'Close: $',
+            (0, _addZero2.default)(close)
           ),
           _react2.default.createElement(
             'h3',
             null,
-            'Low:',
-            low
+            'High: $',
+            (0, _addZero2.default)(high)
+          ),
+          _react2.default.createElement(
+            'h3',
+            null,
+            'Low: $',
+            (0, _addZero2.default)(low)
           ),
           _react2.default.createElement(
             'h3',
@@ -425,15 +480,16 @@ var SingleStock = function (_Component) {
           _react2.default.createElement(
             'h3',
             null,
-            '52-wk high:',
-            week52High
+            '52-wk high: $',
+            (0, _addZero2.default)(week52High)
           ),
           _react2.default.createElement(
             'h3',
             null,
-            '52-wk low:',
-            week52Low
-          )
+            '52-wk low: $',
+            (0, _addZero2.default)(week52Low)
+          ),
+          _react2.default.createElement(_Chart2.default, null)
         );
       }
     }
@@ -494,7 +550,11 @@ var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _addZero = __webpack_require__(/*! ../utils/addZero */ "./client/utils/addZero.js");
 
+var _addZero2 = _interopRequireDefault(_addZero);
+
 var _getColor = __webpack_require__(/*! ../utils/getColor */ "./client/utils/getColor.js");
+
+var _getColor2 = _interopRequireDefault(_getColor);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -512,7 +572,7 @@ var StockOverview = function StockOverview(props) {
       changePercent = stock.changePercent,
       change = stock.change;
 
-  var colorClass = (0, _getColor.getColor)(change);
+  var colorClass = (0, _getColor2.default)(change);
 
   return _react2.default.createElement(
     _reactRouterDom.Link,
@@ -528,7 +588,7 @@ var StockOverview = function StockOverview(props) {
       'h5',
       null,
       'Price: $',
-      (0, _addZero.addZero)(latestPrice),
+      (0, _addZero2.default)(latestPrice),
       ' ',
       _react2.default.createElement(
         'span',
@@ -544,21 +604,21 @@ var StockOverview = function StockOverview(props) {
       'h5',
       null,
       'High: $',
-      (0, _addZero.addZero)(high),
+      (0, _addZero2.default)(high),
       ' | Low: $',
-      (0, _addZero.addZero)(low)
+      (0, _addZero2.default)(low)
     ),
     _react2.default.createElement(
       'h5',
       null,
       'Open: $',
-      (0, _addZero.addZero)(open)
+      (0, _addZero2.default)(open)
     ),
     _react2.default.createElement(
       'h5',
       null,
       'Close: $',
-      (0, _addZero.addZero)(close),
+      (0, _addZero2.default)(close),
       ' (',
       latestTime,
       ')'
@@ -713,9 +773,15 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 //function that adds trailing zeros to dollar price
-var addZero = exports.addZero = function addZero(num) {
+
+var addZero = function addZero(num) {
+  if (num === null) {
+    return;
+  }
   return Number.parseFloat(num).toFixed(2);
 };
+
+exports.default = addZero;
 
 /***/ }),
 
@@ -732,13 +798,42 @@ var addZero = exports.addZero = function addZero(num) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var getColor = exports.getColor = function getColor(num) {
+//function returns class for font color
+
+var getColor = function getColor(num) {
   var colorClass = void 0;
   if (num > 0) colorClass = 'red';
   if (num === 0) colorClass = 'grey';
   if (num < 0) colorClass = 'green';
   return colorClass;
 };
+
+exports.default = getColor;
+
+/***/ }),
+
+/***/ "./client/utils/lastFive.js":
+/*!**********************************!*\
+  !*** ./client/utils/lastFive.js ***!
+  \**********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+//function takes an array of objects and return the last 5 objects
+
+var lastFive = function lastFive(arr) {
+  var last = arr.length;
+  var front = last - 5;
+  return arr.slice(front, last);
+};
+
+exports.default = lastFive;
 
 /***/ }),
 

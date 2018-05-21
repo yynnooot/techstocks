@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import Chart from './Chart';
 
 import { getStockThunk } from '../redux/stock'
-import { addZero } from '../utils/addZero';
-import { getColor } from '../utils/getColor';
+import addZero from '../utils/addZero';
+import getColor from '../utils/getColor';
+import lastFive from '../utils/lastFive';
 
 class SingleStock extends Component {
   constructor(props){
@@ -24,20 +26,24 @@ class SingleStock extends Component {
         </div>
         )
     } else {
-      const { symbol, companyName, primaryExchange, open, close, high, low, latestPrice, change, changePercent, peRatio, week52High, week52Low} = this.props.quote
+      const { symbol, companyName, primaryExchange, latestSource, latestTime, open, close, high, low, latestPrice, change, changePercent, peRatio, week52High, week52Low} = this.props.quote
       const colorClass = getColor(change)
+      console.log(lastFive(this.props.chart))
       return (
           <div>
             <h1>{companyName}</h1>
-            <h3>{primaryExchange}: {symbol}</h3>
-            <h3>{latestPrice} <span className={colorClass}>({change}) {changePercent}%</span></h3>
-            <h3>Open:{open}</h3>
-            <h3>Close:{close}</h3>
-            <h3>High:{high}</h3>
-            <h3>Low:{low}</h3>
+            <h2>{primaryExchange}: {symbol}</h2>
+            <h2>${addZero(latestPrice)} <span className={colorClass}>({change}) {changePercent}%</span></h2>
+            <h3>{latestSource} {latestTime}</h3>
+            <h3>Open: ${addZero(open)}</h3>
+            <h3>Close: ${addZero(close)}</h3>
+            <h3>High: ${addZero(high)}</h3>
+            <h3>Low: ${addZero(low)}</h3>
             <h3>P/E:{peRatio}</h3>
-            <h3>52-wk high:{week52High}</h3>
-            <h3>52-wk low:{week52Low}</h3>
+            <h3>52-wk high: ${addZero(week52High)}</h3>
+            <h3>52-wk low: ${addZero(week52Low)}</h3>
+
+            <Chart />
           </div>
       )
     }

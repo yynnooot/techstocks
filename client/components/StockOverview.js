@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { addZero } from '../utils/addZero';
-import { getColor } from '../utils/getColor';
+import addZero from '../utils/addZero';
+import getColor from '../utils/getColor';
 const StockOverview = (props) => {
 
   const stock = props.stock.quote;
