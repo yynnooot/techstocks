@@ -179,8 +179,6 @@ var Home = exports.Home = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      //const {AAPL, GOOG, IBM, AMZN, MSFIT} = this.props.allStocks;
-      //console.log('allstock:', this.props.allStocks)
       return _react2.default.createElement(
         'div',
         null,
@@ -189,9 +187,13 @@ var Home = exports.Home = function (_Component) {
           null,
           'Home'
         ),
-        this.props.allStocks.map(function (stockObj, idx) {
-          return _react2.default.createElement(_StockOverview2.default, { stock: stockObj, key: idx });
-        })
+        _react2.default.createElement(
+          'div',
+          { className: 'overview-container' },
+          this.props.allStocks.map(function (stockObj, idx) {
+            return _react2.default.createElement(_StockOverview2.default, { stock: stockObj, key: idx });
+          })
+        )
       );
     }
   }]);
@@ -306,12 +308,67 @@ var _react2 = _interopRequireDefault(_react);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var StockOverview = function StockOverview(props) {
+
+  var stock = props.stock.quote;
+
+  var colorClass = void 0;
+  if (stock.change > 0) colorClass = 'red';
+  if (stock.change === 0) colorClass = 'grey';
+  if (stock.change < 0) colorClass = 'green';
+
   return _react2.default.createElement(
-    'h1',
-    null,
-    props.stock.quote.symbol
+    'div',
+    { className: 'stock-overview-container' },
+    _react2.default.createElement(
+      'h3',
+      null,
+      stock.companyName,
+      ' ',
+      stock.symbol
+    ),
+    _react2.default.createElement(
+      'h5',
+      null,
+      stock.primaryExchange
+    ),
+    _react2.default.createElement(
+      'h5',
+      null,
+      'Price: $',
+      addZero(stock.latestPrice),
+      ' ',
+      _react2.default.createElement(
+        'span',
+        { className: colorClass },
+        '(',
+        stock.change,
+        ') ',
+        stock.changePercent,
+        '%'
+      )
+    ),
+    _react2.default.createElement(
+      'h5',
+      null,
+      'Open: $',
+      addZero(stock.open)
+    ),
+    _react2.default.createElement(
+      'h5',
+      null,
+      'Close: $',
+      addZero(stock.close),
+      ' (',
+      stock.latestTime,
+      ')'
+    )
   );
 };
+//function that adds trailing zeros to dollar price
+var addZero = function addZero(num) {
+  return Number.parseFloat(num).toFixed(2);
+};
+
 exports.default = StockOverview;
 
 /***/ }),
@@ -371,8 +428,8 @@ exports.default = function () {
 
   switch (action.type) {
     case GET_ALL_STOCKS:
-      return { all: action.payload ////{AAPL: {…}, AMZN: {…}, IBM: {…}, GOOGL: {…}, MSFT: {…}},
-      };default:
+      return { all: action.payload };
+    default:
       return state;
   }
 };
@@ -400,11 +457,11 @@ var getAllThunk = exports.getAllThunk = function getAllThunk() {
   return function (dispatch) {
     _axios2.default.get('https://api.iextrading.com/1.0/stock/market/batch?symbols=aapl,amzn,ibm,googl,msft&types=quote,chart&range=1m').then(function (res) {
 
-      var obj = res.data; //{AAPL: {…}, AMZN: {…}, IBM: {…}, GOOGL: {…}, MSFT: {…}}
+      var allStocksObj = res.data; //{AAPL: {…}, AMZN: {…}, IBM: {…}, GOOGL: {…}, MSFT: {…}}
 
       //creates an array consisting of individual stock objects
-      var arr = Object.keys(obj).map(function (stock) {
-        return obj[stock];
+      var arr = Object.keys(allStocksObj).map(function (stock) {
+        return allStocksObj[stock];
       });
 
       dispatch(getAllStocks(arr));
@@ -2096,7 +2153,7 @@ exports = module.exports = __webpack_require__(/*! ../node_modules/css-loader/li
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, "* {\n  margin: 0;\n  padding: 0; }\n\n.overview-container {\n  display: flex;\n  margin: 0 auto; }\n\n.stock-overview-container {\n  width: 15%;\n  border: solid 0.1rem grey;\n  margin: 0 1%; }\n\n.red {\n  color: red; }\n\n.green {\n  color: green; }\n\n.grey {\n  color: grey; }\n", ""]);
 
 // exports
 

@@ -15,20 +15,21 @@ export class Home extends Component{
     this.props.getAllThunk()
   }
   render(){
-    //const {AAPL, GOOG, IBM, AMZN, MSFIT} = this.props.allStocks;
-    //console.log('allstock:', this.props.allStocks)
     return (
       <div>
         <h1>Home</h1>
-        {this.props.allStocks.map((stockObj,idx) => <StockOverview stock={stockObj} key={idx} />
-        )}
-        
+        <div className='overview-container'>
+          { this.props.allStocks.map((stockObj, idx) => 
+            <StockOverview stock={stockObj} key={idx} />
+          )}
+        </div>
+         
       </div>
     )
   }
 }
 const mapState = (state) => ({
-  allStocks: state.all, //{AAPL: {…}, AMZN: {…}, IBM: {…}, GOOGL: {…}, MSFT: {…}},
+  allStocks: state.all //{AAPL: {…}, AMZN: {…}, IBM: {…}, GOOGL: {…}, MSFT: {…}},
 })
 const mapDispatch = (dispatch) => ({
   getAllThunk: function(){

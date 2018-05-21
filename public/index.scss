@@ -1,0 +1,22 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+.overview-container{
+  display: flex;
+  margin: 0 auto;
+}
+.stock-overview-container {
+  width: 15%;
+  border: solid 0.1rem grey;
+  margin: 0 1%;
+}
+.red {
+  color: red
+}
+.green {
+  color: green
+}
+.grey {
+  color: grey
+}

@@ -16,10 +16,10 @@ export const getAllThunk = () =>
     axios.get('https://api.iextrading.com/1.0/stock/market/batch?symbols=aapl,amzn,ibm,googl,msft&types=quote,chart&range=1m')  
       .then(res => {
 
-        const obj = res.data; //{AAPL: {…}, AMZN: {…}, IBM: {…}, GOOGL: {…}, MSFT: {…}}
+        const allStocksObj = res.data; //{AAPL: {…}, AMZN: {…}, IBM: {…}, GOOGL: {…}, MSFT: {…}}
         
         //creates an array consisting of individual stock objects
-        const arr = Object.keys(obj).map(stock => obj[stock]) 
+        const arr = Object.keys(allStocksObj).map(stock => allStocksObj[stock]) 
 
         dispatch(getAllStocks(arr))
       })
@@ -30,7 +30,7 @@ export const getAllThunk = () =>
 export default function (state = initialState, action){
   switch (action.type) {
     case GET_ALL_STOCKS:
-      return { all: action.payload } ////{AAPL: {…}, AMZN: {…}, IBM: {…}, GOOGL: {…}, MSFT: {…}},
+      return { all: action.payload }
     default:
       return state
   }
