@@ -145,11 +145,11 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 
-var _stock = __webpack_require__(/*! ../redux/stock */ "./client/redux/stock.js");
-
 var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _stock = __webpack_require__(/*! ../redux/stock */ "./client/redux/stock.js");
 
 var _StockOverview = __webpack_require__(/*! ./StockOverview */ "./client/components/StockOverview.js");
 
@@ -179,7 +179,6 @@ var Home = exports.Home = function (_Component) {
     key: 'componentDidMount',
     value: function componentDidMount() {
       this.props.getAllThunk();
-      this.props.getChartThunk('MSFT');
     }
   }, {
     key: 'render',
@@ -208,23 +207,20 @@ var Home = exports.Home = function (_Component) {
 
 var mapState = function mapState(state) {
   return {
-    allStocks: state.all //{AAPL: {…}, AMZN: {…}, IBM: {…}, GOOGL: {…}, MSFT: {…}},
+    allStocks: state.all //[{AAPL: {…}, AMZN: {…}, IBM: {…},...}],
   };
 };
 var mapDispatch = function mapDispatch(dispatch) {
   return {
     getAllThunk: function getAllThunk() {
       dispatch((0, _stock.getAllThunk)());
-    },
-    getChartThunk: function getChartThunk(ticker) {
-      dispatch((0, _stock.getChartThunk)(ticker));
     }
   };
 };
 
 Home.propTypes = {
   getAllThunk: _propTypes2.default.func,
-  allStocks: _propTypes2.default.array
+  allStocks: _propTypes2.default.arrayOf(_propTypes2.default.object)
 };
 exports.default = (0, _reactRedux.connect)(mapState, mapDispatch)(Home);
 
@@ -291,27 +287,118 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+
+var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _stock = __webpack_require__(/*! ../redux/stock */ "./client/redux/stock.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var SingleStock = function SingleStock(props) {
-  var ticker = props.match.params.ticker;
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-  return _react2.default.createElement(
-    'div',
-    null,
-    _react2.default.createElement(
-      'h5',
-      null,
-      'Stock page'
-    )
-  );
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var SingleStock = function (_Component) {
+  _inherits(SingleStock, _Component);
+
+  function SingleStock(props) {
+    _classCallCheck(this, SingleStock);
+
+    var _this = _possibleConstructorReturn(this, (SingleStock.__proto__ || Object.getPrototypeOf(SingleStock)).call(this, props));
+
+    _this.state = {};
+    return _this;
+  }
+
+  _createClass(SingleStock, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      var ticker = this.props.match.params.ticker;
+
+      this.props.getStock(ticker);
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      if (this.props.loading) {
+        return _react2.default.createElement(
+          'div',
+          null,
+          _react2.default.createElement(
+            'h5',
+            null,
+            'Loading...'
+          )
+        );
+      } else {
+        var _props$quote = this.props.quote,
+            symbol = _props$quote.symbol,
+            companyName = _props$quote.companyName,
+            primaryExchange = _props$quote.primaryExchange,
+            open = _props$quote.open,
+            close = _props$quote.close,
+            high = _props$quote.high,
+            low = _props$quote.low,
+            latestPrice = _props$quote.latestPrice,
+            change = _props$quote.change,
+            changePercent = _props$quote.changePercent,
+            peRatio = _props$quote.peRatio,
+            week52High = _props$quote.week52High,
+            week52Low = _props$quote.week52Low;
+
+        return _react2.default.createElement(
+          'div',
+          null,
+          _react2.default.createElement(
+            'h1',
+            null,
+            companyName,
+            ' (',
+            symbol,
+            ')'
+          )
+        );
+      }
+    }
+  }]);
+
+  return SingleStock;
+}(_react.Component);
+
+SingleStock.propTypes = {
+  getStock: _propTypes2.default.func.isRequired,
+  stock: _propTypes2.default.shape({
+    quote: _propTypes2.default.object,
+    chart: _propTypes2.default.arrayOf(_propTypes2.default.object)
+  })
 };
-
-exports.default = SingleStock;
+var mapState = function mapState(state) {
+  return {
+    stock: state.currentStock, //{quote:{...}, chart:[...]}
+    quote: state.currentStock.quote, //{}
+    chart: state.currentStock.chart, //[{},{}]
+    loading: state.currentStock.loading
+  };
+};
+var mapDispatch = function mapDispatch(dispatch) {
+  return {
+    getStock: function getStock(ticker) {
+      dispatch((0, _stock.getStockThunk)(ticker));
+    }
+  };
+};
+exports.default = (0, _reactRedux.connect)(mapState, mapDispatch)(SingleStock);
 
 /***/ }),
 
@@ -344,40 +431,45 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var StockOverview = function StockOverview(props) {
 
   var stock = props.stock.quote;
+  var symbol = stock.symbol,
+      companyName = stock.companyName,
+      latestPrice = stock.latestPrice,
+      high = stock.high,
+      low = stock.low,
+      open = stock.open,
+      close = stock.close,
+      latestTime = stock.latestTime,
+      changePercent = stock.changePercent,
+      change = stock.change;
 
   var colorClass = void 0;
-  if (stock.change > 0) colorClass = 'red';
-  if (stock.change === 0) colorClass = 'grey';
-  if (stock.change < 0) colorClass = 'green';
+  if (change > 0) colorClass = 'red';
+  if (change === 0) colorClass = 'grey';
+  if (change < 0) colorClass = 'green';
 
   return _react2.default.createElement(
     _reactRouterDom.Link,
-    { to: '/' + stock.symbol, className: 'stock-overview-container' },
+    { to: '/' + symbol, className: 'stock-overview-container' },
     _react2.default.createElement(
       'h3',
       null,
-      stock.companyName,
+      companyName,
       ' ',
-      stock.symbol
-    ),
-    _react2.default.createElement(
-      'h5',
-      null,
-      stock.primaryExchange
+      symbol
     ),
     _react2.default.createElement(
       'h5',
       null,
       'Price: $',
-      addZero(stock.latestPrice),
+      addZero(latestPrice),
       ' ',
       _react2.default.createElement(
         'span',
         { className: colorClass },
         '(',
-        stock.change,
+        change,
         ') ',
-        stock.changePercent,
+        changePercent,
         '%'
       )
     ),
@@ -385,23 +477,23 @@ var StockOverview = function StockOverview(props) {
       'h5',
       null,
       'High: $',
-      addZero(stock.high),
+      addZero(high),
       ' | Low: $',
-      addZero(stock.low)
+      addZero(low)
     ),
     _react2.default.createElement(
       'h5',
       null,
       'Open: $',
-      addZero(stock.open)
+      addZero(open)
     ),
     _react2.default.createElement(
       'h5',
       null,
       'Close: $',
-      addZero(stock.close),
+      addZero(close),
       ' (',
-      stock.latestTime,
+      latestTime,
       ')'
     )
   );
@@ -412,7 +504,7 @@ var addZero = function addZero(num) {
 };
 
 StockOverview.propTypes = {
-  stock: _propTypes2.default.object
+  stock: _propTypes2.default.object.isRequired
 };
 exports.default = StockOverview;
 
@@ -444,9 +536,11 @@ var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
 var _reduxLogger = __webpack_require__(/*! redux-logger */ "./node_modules/redux-logger/dist/redux-logger.js");
 
+var _reduxDevtoolsExtension = __webpack_require__(/*! redux-devtools-extension */ "./node_modules/redux-devtools-extension/index.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var store = (0, _redux.createStore)(_stock2.default, (0, _redux.applyMiddleware)(_reduxThunk2.default, (0, _reduxLogger.createLogger)()));
+var store = (0, _redux.createStore)(_stock2.default, (0, _reduxDevtoolsExtension.composeWithDevTools)((0, _redux.applyMiddleware)(_reduxThunk2.default, (0, _reduxLogger.createLogger)())));
 
 exports.default = store;
 
@@ -465,7 +559,7 @@ exports.default = store;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getChartThunk = exports.getAllThunk = undefined;
+exports.getStockThunk = exports.getAllThunk = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -476,8 +570,8 @@ exports.default = function () {
   switch (action.type) {
     case GET_ALL_STOCKS:
       return _extends({}, state, { all: action.payload });
-    case GET_CHART:
-      return _extends({}, state, { currentChart: action.payload });
+    case GET_STOCK:
+      return _extends({}, state, { currentStock: _extends({}, action.payload, { loading: false }) });
     default:
       return state;
   }
@@ -491,10 +585,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var initialState = {
   all: [],
-  currentChart: {}
+  currentStock: { loading: true }
   //action types
 };var GET_ALL_STOCKS = 'GET_ALL_STOCKS';
-var GET_CHART = 'GET_CHART';
+var GET_STOCK = 'GET_STOCK';
 
 //action creators
 var getAllStocks = function getAllStocks(payload) {
@@ -503,9 +597,9 @@ var getAllStocks = function getAllStocks(payload) {
     payload: payload
   };
 };
-var getChart = function getChart(payload) {
+var getSingleStock = function getSingleStock(payload) {
   return {
-    type: GET_CHART,
+    type: GET_STOCK,
     payload: payload
   };
 };
@@ -528,11 +622,12 @@ var getAllThunk = exports.getAllThunk = function getAllThunk() {
     });
   };
 };
-var getChartThunk = exports.getChartThunk = function getChartThunk(ticker) {
+
+var getStockThunk = exports.getStockThunk = function getStockThunk(ticker) {
   return function (dispatch) {
-    _axios2.default.get('https://api.iextrading.com/1.0/stock/market/batch?symbols=' + ticker + '&types=chart&range=1m').then(function (res) {
-      console.log('res.data chart:', res.data);
-      dispatch(getChart(res.data));
+    _axios2.default.get('https://api.iextrading.com/1.0/stock/market/batch?symbols=' + ticker + '&types=quote,chart&range=1m').then(function (res) {
+      var stockObj = res.data[ticker];
+      dispatch(getSingleStock(stockObj));
     }).catch(function (err) {
       return console.log(err);
     });
@@ -28149,6 +28244,38 @@ module.exports = react;
 if (false) {} else {
   module.exports = __webpack_require__(/*! ./cjs/react.development.js */ "./node_modules/react/cjs/react.development.js");
 }
+
+
+/***/ }),
+
+/***/ "./node_modules/redux-devtools-extension/index.js":
+/*!********************************************************!*\
+  !*** ./node_modules/redux-devtools-extension/index.js ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var compose = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js").compose;
+
+exports.__esModule = true;
+exports.composeWithDevTools = (
+  typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ :
+    function() {
+      if (arguments.length === 0) return undefined;
+      if (typeof arguments[0] === 'object') return compose;
+      return compose.apply(null, arguments);
+    }
+);
+
+exports.devToolsEnhancer = (
+  typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION__ ?
+    window.__REDUX_DEVTOOLS_EXTENSION__ :
+    function() { return function(noop) { return noop; } }
+);
 
 
 /***/ }),

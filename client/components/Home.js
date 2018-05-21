@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import { getAllThunk, getChartThunk } from '../redux/stock';
 import PropTypes from 'prop-types';
 
+import { getAllThunk } from '../redux/stock';
 import StockOverview from './StockOverview';
 
 export class Home extends Component{
@@ -14,7 +14,6 @@ export class Home extends Component{
   }
   componentDidMount(){
     this.props.getAllThunk()
-    this.props.getChartThunk('MSFT')
   }
   render(){
     return (
@@ -31,19 +30,16 @@ export class Home extends Component{
   }
 }
 const mapState = (state) => ({
-  allStocks: state.all //{AAPL: {…}, AMZN: {…}, IBM: {…}, GOOGL: {…}, MSFT: {…}},
+  allStocks: state.all //[{AAPL: {…}, AMZN: {…}, IBM: {…},...}],
 })
 const mapDispatch = (dispatch) => ({
   getAllThunk: function(){
     dispatch(getAllThunk())
-  },
-  getChartThunk: function(ticker){
-    dispatch(getChartThunk(ticker))
   }
 })
 
 Home.propTypes = {
   getAllThunk: PropTypes.func,
-  allStocks: PropTypes.array
+  allStocks: PropTypes.arrayOf(PropTypes.object)
 }
-export default connect(mapState, mapDispatch)(Home)
+export default connect(mapState, mapDispatch)(Home);
