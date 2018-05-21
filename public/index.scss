@@ -2,14 +2,17 @@
   margin: 0;
   padding: 0;
 }
+.home-container{
+  h1{text-align: center}
+}
 .overview-container{
   display: flex;
-  margin: 0 auto;
+  justify-content: space-between;
+  margin: 0 10%;
 }
 .stock-overview-container {
   width: 15%;
   border: solid 0.1rem grey;
-  margin: 0 1%;
 }
 .red {
   color: red

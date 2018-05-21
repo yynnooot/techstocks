@@ -147,6 +147,10 @@ var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-r
 
 var _stock = __webpack_require__(/*! ../redux/stock */ "./client/redux/stock.js");
 
+var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
 var _StockOverview = __webpack_require__(/*! ./StockOverview */ "./client/components/StockOverview.js");
 
 var _StockOverview2 = _interopRequireDefault(_StockOverview);
@@ -175,17 +179,18 @@ var Home = exports.Home = function (_Component) {
     key: 'componentDidMount',
     value: function componentDidMount() {
       this.props.getAllThunk();
+      this.props.getChartThunk('MSFT');
     }
   }, {
     key: 'render',
     value: function render() {
       return _react2.default.createElement(
         'div',
-        null,
+        { className: 'home-container' },
         _react2.default.createElement(
           'h1',
           null,
-          'Home'
+          'Big 5 Tech Stocks'
         ),
         _react2.default.createElement(
           'div',
@@ -210,8 +215,16 @@ var mapDispatch = function mapDispatch(dispatch) {
   return {
     getAllThunk: function getAllThunk() {
       dispatch((0, _stock.getAllThunk)());
+    },
+    getChartThunk: function getChartThunk(ticker) {
+      dispatch((0, _stock.getChartThunk)(ticker));
     }
   };
+};
+
+Home.propTypes = {
+  getAllThunk: _propTypes2.default.func,
+  allStocks: _propTypes2.default.array
 };
 exports.default = (0, _reactRedux.connect)(mapState, mapDispatch)(Home);
 
@@ -231,8 +244,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 var _react2 = _interopRequireDefault(_react);
@@ -243,47 +254,64 @@ var _Home = __webpack_require__(/*! ./Home */ "./client/components/Home.js");
 
 var _Home2 = _interopRequireDefault(_Home);
 
+var _SingleStock = __webpack_require__(/*! ./SingleStock */ "./client/components/SingleStock.js");
+
+var _SingleStock2 = _interopRequireDefault(_SingleStock);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Root = function (_Component) {
-  _inherits(Root, _Component);
-
-  function Root() {
-    _classCallCheck(this, Root);
-
-    return _possibleConstructorReturn(this, (Root.__proto__ || Object.getPrototypeOf(Root)).apply(this, arguments));
-  }
-
-  _createClass(Root, [{
-    key: 'render',
-    value: function render() {
-      return _react2.default.createElement(
-        'div',
-        null,
-        _react2.default.createElement(
-          'div',
-          null,
-          _react2.default.createElement(
-            'h1',
-            null,
-            'HELLO FROM ROOT'
-          )
-        ),
-        _react2.default.createElement(_Home2.default, null)
-      );
-    }
-  }]);
-
-  return Root;
-}(_react.Component);
+var Root = function Root() {
+  return _react2.default.createElement(
+    _reactRouterDom.BrowserRouter,
+    null,
+    _react2.default.createElement(
+      _reactRouterDom.Switch,
+      null,
+      _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/', component: _Home2.default }),
+      _react2.default.createElement(_reactRouterDom.Route, { path: '/:ticker', component: _SingleStock2.default })
+    )
+  );
+};
 
 exports.default = Root;
+
+/***/ }),
+
+/***/ "./client/components/SingleStock.js":
+/*!******************************************!*\
+  !*** ./client/components/SingleStock.js ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var SingleStock = function SingleStock(props) {
+  var ticker = props.match.params.ticker;
+
+  return _react2.default.createElement(
+    'div',
+    null,
+    _react2.default.createElement(
+      'h5',
+      null,
+      'Stock page'
+    )
+  );
+};
+
+exports.default = SingleStock;
 
 /***/ }),
 
@@ -305,6 +333,12 @@ var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactRouterDom = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
+
+var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var StockOverview = function StockOverview(props) {
@@ -317,8 +351,8 @@ var StockOverview = function StockOverview(props) {
   if (stock.change < 0) colorClass = 'green';
 
   return _react2.default.createElement(
-    'div',
-    { className: 'stock-overview-container' },
+    _reactRouterDom.Link,
+    { to: '/' + stock.symbol, className: 'stock-overview-container' },
     _react2.default.createElement(
       'h3',
       null,
@@ -350,6 +384,14 @@ var StockOverview = function StockOverview(props) {
     _react2.default.createElement(
       'h5',
       null,
+      'High: $',
+      addZero(stock.high),
+      ' | Low: $',
+      addZero(stock.low)
+    ),
+    _react2.default.createElement(
+      'h5',
+      null,
       'Open: $',
       addZero(stock.open)
     ),
@@ -369,6 +411,9 @@ var addZero = function addZero(num) {
   return Number.parseFloat(num).toFixed(2);
 };
 
+StockOverview.propTypes = {
+  stock: _propTypes2.default.object
+};
 exports.default = StockOverview;
 
 /***/ }),
@@ -420,7 +465,9 @@ exports.default = store;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getAllThunk = undefined;
+exports.getChartThunk = exports.getAllThunk = undefined;
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 exports.default = function () {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
@@ -428,7 +475,9 @@ exports.default = function () {
 
   switch (action.type) {
     case GET_ALL_STOCKS:
-      return { all: action.payload };
+      return _extends({}, state, { all: action.payload });
+    case GET_CHART:
+      return _extends({}, state, { currentChart: action.payload });
     default:
       return state;
   }
@@ -440,9 +489,12 @@ var _axios2 = _interopRequireDefault(_axios);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var initialState = { all: []
+var initialState = {
+  all: [],
+  currentChart: {}
   //action types
 };var GET_ALL_STOCKS = 'GET_ALL_STOCKS';
+var GET_CHART = 'GET_CHART';
 
 //action creators
 var getAllStocks = function getAllStocks(payload) {
@@ -451,11 +503,17 @@ var getAllStocks = function getAllStocks(payload) {
     payload: payload
   };
 };
+var getChart = function getChart(payload) {
+  return {
+    type: GET_CHART,
+    payload: payload
+  };
+};
 
 //thunk creators
 var getAllThunk = exports.getAllThunk = function getAllThunk() {
   return function (dispatch) {
-    _axios2.default.get('https://api.iextrading.com/1.0/stock/market/batch?symbols=aapl,amzn,ibm,googl,msft&types=quote,chart&range=1m').then(function (res) {
+    _axios2.default.get('https://api.iextrading.com/1.0/stock/market/batch?symbols=aapl,amzn,ibm,googl,msft&types=quote&range=1m').then(function (res) {
 
       var allStocksObj = res.data; //{AAPL: {…}, AMZN: {…}, IBM: {…}, GOOGL: {…}, MSFT: {…}}
 
@@ -465,6 +523,16 @@ var getAllThunk = exports.getAllThunk = function getAllThunk() {
       });
 
       dispatch(getAllStocks(arr));
+    }).catch(function (err) {
+      return console.log(err);
+    });
+  };
+};
+var getChartThunk = exports.getChartThunk = function getChartThunk(ticker) {
+  return function (dispatch) {
+    _axios2.default.get('https://api.iextrading.com/1.0/stock/market/batch?symbols=' + ticker + '&types=chart&range=1m').then(function (res) {
+      console.log('res.data chart:', res.data);
+      dispatch(getChart(res.data));
     }).catch(function (err) {
       return console.log(err);
     });
@@ -2153,7 +2221,7 @@ exports = module.exports = __webpack_require__(/*! ../node_modules/css-loader/li
 
 
 // module
-exports.push([module.i, "* {\n  margin: 0;\n  padding: 0; }\n\n.overview-container {\n  display: flex;\n  margin: 0 auto; }\n\n.stock-overview-container {\n  width: 15%;\n  border: solid 0.1rem grey;\n  margin: 0 1%; }\n\n.red {\n  color: red; }\n\n.green {\n  color: green; }\n\n.grey {\n  color: grey; }\n", ""]);
+exports.push([module.i, "* {\n  margin: 0;\n  padding: 0; }\n\n.home-container h1 {\n  text-align: center; }\n\n.overview-container {\n  display: flex;\n  justify-content: space-between;\n  margin: 0 10%; }\n\n.stock-overview-container {\n  width: 15%;\n  border: solid 0.1rem grey; }\n\n.red {\n  color: red; }\n\n.green {\n  color: green; }\n\n.grey {\n  color: grey; }\n", ""]);
 
 // exports
 
