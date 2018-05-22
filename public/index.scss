@@ -28,15 +28,13 @@ body{
   .singlestock-header{
     
   }
-  .left{
-    width: 40%
-  }
-  .right{
-    width: 60%
-  }
+}
+stockdetails-container{
+  width: 40%;
 }
 .chart-container{
   height: 70vh;
+  width: 60%;
 }
 .title-seperator{
   background-color: #DADADA;

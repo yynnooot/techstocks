@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Chart from './Chart';
+import StockDetails from './StockDetails';
 
 import { getStockThunk } from '../redux/stock'
 import addZero from '../utils/addZero';
@@ -28,8 +29,7 @@ class SingleStock extends Component {
         )
     } else {
 
-      const { symbol, companyName, primaryExchange, latestSource, latestTime, open, close, high, low, latestPrice, change, changePercent, peRatio, week52High, week52Low} = this.props.quote
-      const colorClass = getColor(change)
+      const { symbol, companyName, primaryExchange } = this.props.quote
       const { newData, dates } = mapChartData(this.props.chart);
 
       return (
@@ -44,32 +44,11 @@ class SingleStock extends Component {
 
             <div className='singlestock-main flex'>
 
-              <div className='left'>
-                <div className='flex baseline'>
-                  <h2>${addZero(latestPrice)} <span className={colorClass}>({change}) {changePercent}%</span></h2>
-                  <h3>{latestSource} {latestTime}</h3>
-                </div> 
-                <div className='flex'>
-                  <div>
-                    <h3>Open: ${addZero(open)}</h3>
-                    <h3>Close: ${addZero(close)}</h3>
-                  </div>
-                  <div>
-                    <h3>High: ${addZero(high)}</h3>
-                    <h3>Low: ${addZero(low)}</h3>
-                  </div>
-                </div>
-                <h3>P/E:{peRatio}</h3>
-                <h3>52-wk high: ${addZero(week52High)}</h3>
-                <h3>52-wk low: ${addZero(week52Low)}</h3>
-              </div>
-
-              <div className='right'>
+                <StockDetails />
+            
                 <Chart data={newData} dates={dates}/>
-              </div>
 
             </div>
-
           </div>
       )
     }
