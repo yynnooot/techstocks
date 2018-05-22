@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Chart from './Chart';
 
@@ -22,7 +23,7 @@ class SingleStock extends Component {
     if(this.props.loading){
       return (
         <div>
-          <h5>Loading...</h5>
+          <h3>Loading...</h3>
         </div>
         )
     } else {
@@ -30,15 +31,29 @@ class SingleStock extends Component {
       const colorClass = getColor(change)
       const fiveDay = lastFive(this.props.chart);
       return (
-          <div>
-            <h1>{companyName}</h1>
-            <h2>{primaryExchange}: {symbol}</h2>
-            <h2>${addZero(latestPrice)} <span className={colorClass}>({change}) {changePercent}%</span></h2>
-            <h3>{latestSource} {latestTime}</h3>
-            <h3>Open: ${addZero(open)}</h3>
-            <h3>Close: ${addZero(close)}</h3>
-            <h3>High: ${addZero(high)}</h3>
-            <h3>Low: ${addZero(low)}</h3>
+          <div className='singlestock-container'>
+            <Link to='/'>&larr; Back</Link>
+            <div className='singlestock-header flex baseline'>
+              <h1>{companyName} ({symbol})</h1>
+              <h2>{primaryExchange}</h2>
+            </div>
+
+            <div className='title-seperator'></div>
+            
+            <div className='flex baseline'>
+              <h2>${addZero(latestPrice)} <span className={colorClass}>({change}) {changePercent}%</span></h2>
+              <h3>{latestSource} {latestTime}</h3>
+            </div> 
+            <div className='flex'>
+              <div>
+                <h3>Open: ${addZero(open)}</h3>
+                <h3>Close: ${addZero(close)}</h3>
+              </div>
+              <div>
+                <h3>High: ${addZero(high)}</h3>
+                <h3>Low: ${addZero(low)}</h3>
+              </div>
+            </div>
             <h3>P/E:{peRatio}</h3>
             <h3>52-wk high: ${addZero(week52High)}</h3>
             <h3>52-wk low: ${addZero(week52Low)}</h3>

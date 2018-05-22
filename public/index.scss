@@ -2,6 +2,16 @@
   margin: 0;
   padding: 0;
 }
+body{
+  font-family: Helvetica;
+  margin: 3% 5%
+}
+.flex{
+  display: flex;
+}
+.baseline{
+  align-items: baseline;
+}
 .home-container{
   h1{text-align: center}
 }
@@ -14,8 +24,19 @@
   width: 15%;
   border: solid 0.1rem grey;
 }
+.singlestock-container{
+  .singlestock-header{
+    
+  }
+}
 .chart-container{
-  
+  height: 50vh;
+  margin: 0 15%;
+}
+.title-seperator{
+  background-color: #DADADA;
+  height: 1px;
+  margin: 12px 0 20px;
 }
 .red {
   color: red

@@ -148,7 +148,10 @@ var Chart = function Chart(props) {
   console.log(props.fiveDay);
   var dates = [];
   var newData = props.fiveDay.map(function (stock) {
-    dates.push(stock.date);
+
+    var newdate = stock.date.slice(5);
+    dates.push(newdate);
+
     return {
       x: stock.date,
       open: stock.open,
@@ -164,20 +167,33 @@ var Chart = function Chart(props) {
       _victory.VictoryChart,
       {
         theme: _victory.VictoryTheme.material,
-        domainPadding: { x: 25 },
-        scale: { x: "linear" }
+        domainPadding: { x: 50 },
+        scale: { x: "linear" },
+        animate: { duration: 1000 },
+        containerComponent: _react2.default.createElement(_victory.VictoryVoronoiContainer, null)
       },
       _react2.default.createElement(_victory.VictoryAxis, {
         tickFormat: dates,
         style: {
-          axisLabel: { fontSize: 20, padding: 30 }
+          tickLabels: { fontSize: 8, padding: 10, angle: -45 }
         }
       }),
-      _react2.default.createElement(_victory.VictoryAxis, { dependentAxis: true }),
+      _react2.default.createElement(_victory.VictoryAxis, {
+        dependentAxis: true,
+        style: {
+          tickLabels: { fontSize: 8 }
+        }
+      }),
       _react2.default.createElement(_victory.VictoryCandlestick, {
         candleColors: { positive: "#5f5c5b", negative: "#c43a31" },
         data: newData,
-        containerComponent: _react2.default.createElement(_victory.VictoryVoronoiContainer, null)
+        style: {
+          data: { width: 50 }
+        },
+        labels: function labels(d) {
+          return ['' + d.x, 'open: ' + d.open, 'close: ' + d.close, 'high: ' + d.high, 'low: ' + d.low];
+        },
+        labelComponent: _react2.default.createElement(_victory.VictoryTooltip, null)
       })
     )
   );
@@ -360,6 +376,8 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 
+var _reactRouterDom = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
+
 var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
@@ -417,7 +435,7 @@ var SingleStock = function (_Component) {
           'div',
           null,
           _react2.default.createElement(
-            'h5',
+            'h3',
             null,
             'Loading...'
           )
@@ -444,65 +462,92 @@ var SingleStock = function (_Component) {
         var fiveDay = (0, _lastFive2.default)(this.props.chart);
         return _react2.default.createElement(
           'div',
-          null,
+          { className: 'singlestock-container' },
           _react2.default.createElement(
-            'h1',
-            null,
-            companyName
+            _reactRouterDom.Link,
+            { to: '/' },
+            '\u2190 Back'
           ),
           _react2.default.createElement(
-            'h2',
-            null,
-            primaryExchange,
-            ': ',
-            symbol
-          ),
-          _react2.default.createElement(
-            'h2',
-            null,
-            '$',
-            (0, _addZero2.default)(latestPrice),
-            ' ',
+            'div',
+            { className: 'singlestock-header flex baseline' },
             _react2.default.createElement(
-              'span',
-              { className: colorClass },
-              '(',
-              change,
-              ') ',
-              changePercent,
-              '%'
+              'h1',
+              null,
+              companyName,
+              ' (',
+              symbol,
+              ')'
+            ),
+            _react2.default.createElement(
+              'h2',
+              null,
+              primaryExchange
+            )
+          ),
+          _react2.default.createElement('div', { className: 'title-seperator' }),
+          _react2.default.createElement(
+            'div',
+            { className: 'flex baseline' },
+            _react2.default.createElement(
+              'h2',
+              null,
+              '$',
+              (0, _addZero2.default)(latestPrice),
+              ' ',
+              _react2.default.createElement(
+                'span',
+                { className: colorClass },
+                '(',
+                change,
+                ') ',
+                changePercent,
+                '%'
+              )
+            ),
+            _react2.default.createElement(
+              'h3',
+              null,
+              latestSource,
+              ' ',
+              latestTime
             )
           ),
           _react2.default.createElement(
-            'h3',
-            null,
-            latestSource,
-            ' ',
-            latestTime
-          ),
-          _react2.default.createElement(
-            'h3',
-            null,
-            'Open: $',
-            (0, _addZero2.default)(open)
-          ),
-          _react2.default.createElement(
-            'h3',
-            null,
-            'Close: $',
-            (0, _addZero2.default)(close)
-          ),
-          _react2.default.createElement(
-            'h3',
-            null,
-            'High: $',
-            (0, _addZero2.default)(high)
-          ),
-          _react2.default.createElement(
-            'h3',
-            null,
-            'Low: $',
-            (0, _addZero2.default)(low)
+            'div',
+            { className: 'flex' },
+            _react2.default.createElement(
+              'div',
+              null,
+              _react2.default.createElement(
+                'h3',
+                null,
+                'Open: $',
+                (0, _addZero2.default)(open)
+              ),
+              _react2.default.createElement(
+                'h3',
+                null,
+                'Close: $',
+                (0, _addZero2.default)(close)
+              )
+            ),
+            _react2.default.createElement(
+              'div',
+              null,
+              _react2.default.createElement(
+                'h3',
+                null,
+                'High: $',
+                (0, _addZero2.default)(high)
+              ),
+              _react2.default.createElement(
+                'h3',
+                null,
+                'Low: $',
+                (0, _addZero2.default)(low)
+              )
+            )
           ),
           _react2.default.createElement(
             'h3',
@@ -2550,7 +2595,7 @@ exports = module.exports = __webpack_require__(/*! ../node_modules/css-loader/li
 
 
 // module
-exports.push([module.i, "* {\n  margin: 0;\n  padding: 0; }\n\n.home-container h1 {\n  text-align: center; }\n\n.overview-container {\n  display: flex;\n  justify-content: space-between;\n  margin: 0 10%; }\n\n.stock-overview-container {\n  width: 15%;\n  border: solid 0.1rem grey; }\n\n.red {\n  color: red; }\n\n.green {\n  color: green; }\n\n.grey {\n  color: grey; }\n", ""]);
+exports.push([module.i, "* {\n  margin: 0;\n  padding: 0; }\n\nbody {\n  font-family: Helvetica;\n  margin: 3% 5%; }\n\n.flex {\n  display: flex; }\n\n.baseline {\n  align-items: baseline; }\n\n.home-container h1 {\n  text-align: center; }\n\n.overview-container {\n  display: flex;\n  justify-content: space-between;\n  margin: 0 10%; }\n\n.stock-overview-container {\n  width: 15%;\n  border: solid 0.1rem grey; }\n\n.chart-container {\n  height: 50vh;\n  margin: 0 15%; }\n\n.title-seperator {\n  background-color: #DADADA;\n  height: 1px;\n  margin: 12px 0 20px; }\n\n.red {\n  color: red; }\n\n.green {\n  color: green; }\n\n.grey {\n  color: grey; }\n", ""]);
 
 // exports
 
