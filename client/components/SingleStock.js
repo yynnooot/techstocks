@@ -34,7 +34,7 @@ class SingleStock extends Component {
 
       return (
           <div className='singlestock-container'>
-            <Link to='/'>&larr; Back</Link>
+            <Link to='/'><span className='bright'>&larr; Back</span></Link>
             <div className='singlestock-header flex baseline'>
               <h1>{companyName} ({symbol})</h1>
               <h2>{primaryExchange}</h2>

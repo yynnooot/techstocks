@@ -11,22 +11,22 @@ const StockDetails = (props) => {
   return (
     <div className='stockdetails-container left'>
       <div className='flex baseline'>
-        <h2>${addZero(latestPrice)} <span className={colorClass}>({change}) {changePercent}%</span></h2>
+        <h1>${addZero(latestPrice)} <span className={colorClass}>({change}) {changePercent}%</span></h1>
         <h3>{latestSource} {latestTime}</h3>
       </div> 
       <div className='flex'>
         <div>
-          <h3>Open: ${addZero(open)}</h3>
-          <h3>Close: ${addZero(close)}</h3>
+          <h2>Open: ${addZero(open)}</h2>
+          <h2>Close: ${addZero(close)}</h2>
         </div>
         <div>
-          <h3>High: ${addZero(high)}</h3>
-          <h3>Low: ${addZero(low)}</h3>
+          <h2>High: ${addZero(high)}</h2>
+          <h2>Low: ${addZero(low)}</h2>
         </div>
       </div>
-      <h3>P/E:{peRatio}</h3>
-      <h3>52-wk high: ${addZero(week52High)}</h3>
-      <h3>52-wk low: ${addZero(week52Low)}</h3>
+      <h2>P/E:{peRatio}</h2>
+      <h2>52-wk high: ${addZero(week52High)}</h2>
+      <h2>52-wk low: ${addZero(week52Low)}</h2>
     </div>
   )}
 

@@ -157,6 +157,11 @@ var Chart = function Chart(props) {
     'div',
     { className: 'chart-container' },
     _react2.default.createElement(
+      'h1',
+      null,
+      '5 Day Candlestick Chart:'
+    ),
+    _react2.default.createElement(
       _victory.VictoryChart,
       {
         theme: _victory.VictoryTheme.material,
@@ -168,20 +173,29 @@ var Chart = function Chart(props) {
       },
       _react2.default.createElement(_victory.VictoryAxis, {
         tickFormat: dates,
+        label: 'MM-DD',
         style: {
-          tickLabels: { fontSize: 8, padding: 10, angle: -45 }
+          tickLabels: { fontSize: 12, padding: 10, angle: -45, fill: '#FFFFFF' },
+          axisLabel: { fontSize: 10, padding: 50, fill: "#CCCCCC" }
         }
       }),
       _react2.default.createElement(_victory.VictoryAxis, {
         dependentAxis: true,
+        label: 'U.S. Dollars',
         style: {
-          tickLabels: { fontSize: 8 }
+          tickLabels: { fontSize: 12, fill: '#FFFFFF' },
+          axisLabel: { fontSize: 10, padding: 50, fill: "#CCCCCC" }
         }
       }),
       _react2.default.createElement(_victory.VictoryCandlestick, {
         candleColors: { positive: "#3db384", negative: "#c43a31" },
         data: props.data,
-
+        style: {
+          data: {
+            stroke: '#FFD347',
+            strokeWidth: 2
+          }
+        },
         labels: function labels(d) {
           return ['' + d.x, 'open: $' + d.open, 'close: $' + d.close, 'high: $' + d.high, 'low: $' + d.low];
         },
@@ -262,8 +276,9 @@ var Home = exports.Home = function (_Component) {
         _react2.default.createElement(
           'h1',
           null,
-          'Big 5 Tech Stocks'
+          'BIG5 Tech Stocks'
         ),
+        _react2.default.createElement('div', { className: 'title-seperator-home' }),
         _react2.default.createElement(
           'div',
           { className: 'overview-container' },
@@ -452,7 +467,11 @@ var SingleStock = function (_Component) {
           _react2.default.createElement(
             _reactRouterDom.Link,
             { to: '/' },
-            '\u2190 Back'
+            _react2.default.createElement(
+              'span',
+              { className: 'bright' },
+              '\u2190 Back'
+            )
           ),
           _react2.default.createElement(
             'div',
@@ -569,7 +588,7 @@ var StockDetails = function StockDetails(props) {
       'div',
       { className: 'flex baseline' },
       _react2.default.createElement(
-        'h2',
+        'h1',
         null,
         '$',
         (0, _addZero2.default)(latestPrice),
@@ -599,13 +618,13 @@ var StockDetails = function StockDetails(props) {
         'div',
         null,
         _react2.default.createElement(
-          'h3',
+          'h2',
           null,
           'Open: $',
           (0, _addZero2.default)(open)
         ),
         _react2.default.createElement(
-          'h3',
+          'h2',
           null,
           'Close: $',
           (0, _addZero2.default)(close)
@@ -615,13 +634,13 @@ var StockDetails = function StockDetails(props) {
         'div',
         null,
         _react2.default.createElement(
-          'h3',
+          'h2',
           null,
           'High: $',
           (0, _addZero2.default)(high)
         ),
         _react2.default.createElement(
-          'h3',
+          'h2',
           null,
           'Low: $',
           (0, _addZero2.default)(low)
@@ -629,19 +648,19 @@ var StockDetails = function StockDetails(props) {
       )
     ),
     _react2.default.createElement(
-      'h3',
+      'h2',
       null,
       'P/E:',
       peRatio
     ),
     _react2.default.createElement(
-      'h3',
+      'h2',
       null,
       '52-wk high: $',
       (0, _addZero2.default)(week52High)
     ),
     _react2.default.createElement(
-      'h3',
+      'h2',
       null,
       '52-wk low: $',
       (0, _addZero2.default)(week52Low)
@@ -721,16 +740,22 @@ var StockOverview = function StockOverview(props) {
     _reactRouterDom.Link,
     { to: '/' + symbol, className: 'stock-overview-container' },
     _react2.default.createElement(
-      'h3',
+      'h2',
       null,
-      companyName,
-      ' ',
-      symbol
+      companyName
     ),
     _react2.default.createElement(
-      'h5',
+      'h3',
       null,
-      'Price: $',
+      '(',
+      symbol,
+      ')'
+    ),
+    _react2.default.createElement('div', { className: 'title-seperator-small' }),
+    _react2.default.createElement(
+      'h2',
+      null,
+      '$',
       (0, _addZero2.default)(latestPrice),
       ' ',
       _react2.default.createElement(
@@ -744,21 +769,13 @@ var StockOverview = function StockOverview(props) {
       )
     ),
     _react2.default.createElement(
-      'h5',
-      null,
-      'High: $',
-      (0, _addZero2.default)(high),
-      ' | Low: $',
-      (0, _addZero2.default)(low)
-    ),
-    _react2.default.createElement(
-      'h5',
+      'h4',
       null,
       'Open: $',
       (0, _addZero2.default)(open)
     ),
     _react2.default.createElement(
-      'h5',
+      'h4',
       null,
       'Close: $',
       (0, _addZero2.default)(close),
@@ -945,9 +962,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var getColor = function getColor(num) {
   var colorClass = void 0;
-  if (num > 0) colorClass = 'red';
+  if (num > 0) colorClass = 'green';
   if (num === 0) colorClass = 'grey';
-  if (num < 0) colorClass = 'green';
+  if (num < 0) colorClass = 'red';
   return colorClass;
 };
 
@@ -2686,7 +2703,7 @@ exports = module.exports = __webpack_require__(/*! ../node_modules/css-loader/li
 
 
 // module
-exports.push([module.i, "* {\n  margin: 0;\n  padding: 0; }\n\nbody {\n  font-family: Helvetica;\n  margin: 3% 5%; }\n\n.flex {\n  display: flex; }\n\n.baseline {\n  align-items: baseline; }\n\n.home-container h1 {\n  text-align: center; }\n\n.overview-container {\n  display: flex;\n  justify-content: space-between;\n  margin: 0 10%; }\n\n.stock-overview-container {\n  width: 15%;\n  border: solid 0.1rem grey; }\n\nstockdetails-container {\n  width: 40%; }\n\n.chart-container {\n  height: 70vh;\n  width: 60%; }\n\n.title-seperator {\n  background-color: #DADADA;\n  height: 1px;\n  margin: 12px 0 20px; }\n\n.red {\n  color: red; }\n\n.green {\n  color: green; }\n\n.grey {\n  color: grey; }\n", ""]);
+exports.push([module.i, "* {\n  margin: 0;\n  padding: 0; }\n\nbody {\n  font-family: Helvetica;\n  margin: 3% 5%;\n  background: 665775;\n  background: -webkit-linear-gradient(to right, #3b2871, #665775);\n  background: linear-gradient(to right, #665775, #3b2871);\n  color: white; }\n\n.flex {\n  display: flex; }\n\n.baseline {\n  align-items: baseline; }\n\n.home-container h1 {\n  color: white;\n  text-align: left;\n  font-size: 6rem;\n  font-weight: 800; }\n\n.overview-container {\n  display: flex;\n  justify-content: space-between;\n  margin-top: 8rem; }\n\n.stock-overview-container {\n  width: 15%;\n  background: #817389ba;\n  padding: 2rem 2rem;\n  border-radius: 0.8rem;\n  margin: 0 1rem;\n  color: white;\n  text-decoration: none; }\n  .stock-overview-container h3 {\n    color: #FFD347; }\n\n.stock-overview-container:hover {\n  background: #5a40d1ba; }\n\n.singlestock-container .singlestock-header {\n  margin-top: 2rem; }\n  .singlestock-container .singlestock-header h1 {\n    margin-right: 1rem;\n    color: #FFD347; }\n\n.stockdetails-container {\n  width: 40%; }\n  .stockdetails-container h1 {\n    margin-right: 1rem; }\n  .stockdetails-container h2 {\n    margin-right: 6rem;\n    margin-top: 1rem; }\n\n.chart-container {\n  height: 70vh;\n  width: 60%; }\n  .chart-container h1 {\n    text-align: center; }\n\n.title-seperator {\n  background-color: #ff15cd;\n  height: 1px;\n  margin: 1.5rem 0 2rem; }\n\n.title-seperator-small {\n  background-color: #ff15cd;\n  height: 1px;\n  margin: 0.8rem 0 1rem; }\n\n.title-seperator-home {\n  background-color: #FFD347;\n  height: 2px;\n  margin: 1.5rem 0 2rem; }\n\n.red {\n  color: #8a0000; }\n\n.green {\n  color: #00f500; }\n\n.grey {\n  color: grey; }\n\n.bright {\n  color: #ff15cd; }\n", ""]);
 
 // exports
 

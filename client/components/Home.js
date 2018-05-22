@@ -18,7 +18,8 @@ export class Home extends Component{
   render(){
     return (
       <div className='home-container'>
-        <h1>Big 5 Tech Stocks</h1>
+        <h1>BIG5 Tech Stocks</h1>
+        <div className='title-seperator-home'></div>
         <div className='overview-container'>
           { this.props.allStocks.map((stockObj, idx) => 
             <StockOverview stock={stockObj} key={idx} />

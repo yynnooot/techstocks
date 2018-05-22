@@ -11,11 +11,12 @@ const StockOverview = (props) => {
 
   return (
     <Link to={`/${symbol}`} className='stock-overview-container'>
-        <h3>{companyName} {symbol}</h3>
-        <h5>Price: ${addZero(latestPrice)} <span className={colorClass}>({change}) {changePercent}%</span></h5>
-        <h5>High: ${addZero(high)} | Low: ${addZero(low)}</h5>
-        <h5>Open: ${addZero(open)}</h5>
-        <h5>Close: ${addZero(close)} ({latestTime})</h5>
+        <h2>{companyName}</h2>
+        <h3>({symbol})</h3>
+        <div className='title-seperator-small'></div>
+        <h2>${addZero(latestPrice)} <span className={colorClass}>({change}) {changePercent}%</span></h2>
+        <h4>Open: ${addZero(open)}</h4>
+        <h4>Close: ${addZero(close)} ({latestTime})</h4>
     </Link>
   )
 }
