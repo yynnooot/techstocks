@@ -142,24 +142,30 @@ var _react2 = _interopRequireDefault(_react);
 
 var _victory = __webpack_require__(/*! victory */ "./node_modules/victory/es/index.js");
 
+var _addZero = __webpack_require__(/*! ../utils/addZero */ "./client/utils/addZero.js");
+
+var _addZero2 = _interopRequireDefault(_addZero);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Chart = function Chart(props) {
-  console.log(props.fiveDay);
-  var dates = [];
-  var newData = props.fiveDay.map(function (stock) {
+  // console.log(props.fiveDay)
+  // const dates = []
+  // const newData = props.fiveDay.map(stock => {
 
-    var newdate = stock.date.slice(5);
-    dates.push(newdate);
+  //   let newdate = stock.date.slice(5)
+  //   dates.push(newdate)
 
-    return {
-      x: stock.date,
-      open: stock.open,
-      close: stock.close,
-      high: stock.high,
-      low: stock.low
-    };
-  });
+  //   return {
+  //     x: stock.date,
+  //     open: addZero(stock.open),
+  //     close: addZero(stock.close),
+  //     high: addZero(stock.high),
+  //     low: addZero(stock.low)
+  //   }
+  // })
+  var dates = props.dates;
+  var data = props.data;
   return _react2.default.createElement(
     'div',
     { className: 'chart-container' },
@@ -167,7 +173,7 @@ var Chart = function Chart(props) {
       _victory.VictoryChart,
       {
         theme: _victory.VictoryTheme.material,
-        domainPadding: { x: 50 },
+        domainPadding: { x: 30 },
         scale: { x: "linear" },
         animate: { duration: 1000 },
         containerComponent: _react2.default.createElement(_victory.VictoryVoronoiContainer, null)
@@ -186,12 +192,10 @@ var Chart = function Chart(props) {
       }),
       _react2.default.createElement(_victory.VictoryCandlestick, {
         candleColors: { positive: "#5f5c5b", negative: "#c43a31" },
-        data: newData,
-        style: {
-          data: { width: 50 }
-        },
+        data: props.data,
+
         labels: function labels(d) {
-          return ['' + d.x, 'open: ' + d.open, 'close: ' + d.close, 'high: ' + d.high, 'low: ' + d.low];
+          return ['' + d.x, 'open: $' + d.open, 'close: $' + d.close, 'high: $' + d.high, 'low: $' + d.low];
         },
         labelComponent: _react2.default.createElement(_victory.VictoryTooltip, null)
       })
@@ -396,9 +400,9 @@ var _getColor = __webpack_require__(/*! ../utils/getColor */ "./client/utils/get
 
 var _getColor2 = _interopRequireDefault(_getColor);
 
-var _lastFive = __webpack_require__(/*! ../utils/lastFive */ "./client/utils/lastFive.js");
+var _mapChartData2 = __webpack_require__(/*! ../utils/mapChartData */ "./client/utils/mapChartData.js");
 
-var _lastFive2 = _interopRequireDefault(_lastFive);
+var _mapChartData3 = _interopRequireDefault(_mapChartData2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -459,7 +463,11 @@ var SingleStock = function (_Component) {
             week52Low = _props$quote.week52Low;
 
         var colorClass = (0, _getColor2.default)(change);
-        var fiveDay = (0, _lastFive2.default)(this.props.chart);
+
+        var _mapChartData = (0, _mapChartData3.default)(this.props.chart),
+            newData = _mapChartData.newData,
+            dates = _mapChartData.dates;
+
         return _react2.default.createElement(
           'div',
           { className: 'singlestock-container' },
@@ -488,86 +496,98 @@ var SingleStock = function (_Component) {
           _react2.default.createElement('div', { className: 'title-seperator' }),
           _react2.default.createElement(
             'div',
-            { className: 'flex baseline' },
-            _react2.default.createElement(
-              'h2',
-              null,
-              '$',
-              (0, _addZero2.default)(latestPrice),
-              ' ',
-              _react2.default.createElement(
-                'span',
-                { className: colorClass },
-                '(',
-                change,
-                ') ',
-                changePercent,
-                '%'
-              )
-            ),
-            _react2.default.createElement(
-              'h3',
-              null,
-              latestSource,
-              ' ',
-              latestTime
-            )
-          ),
-          _react2.default.createElement(
-            'div',
-            { className: 'flex' },
+            { className: 'singlestock-main flex' },
             _react2.default.createElement(
               'div',
-              null,
+              { className: 'left' },
               _react2.default.createElement(
-                'h3',
-                null,
-                'Open: $',
-                (0, _addZero2.default)(open)
+                'div',
+                { className: 'flex baseline' },
+                _react2.default.createElement(
+                  'h2',
+                  null,
+                  '$',
+                  (0, _addZero2.default)(latestPrice),
+                  ' ',
+                  _react2.default.createElement(
+                    'span',
+                    { className: colorClass },
+                    '(',
+                    change,
+                    ') ',
+                    changePercent,
+                    '%'
+                  )
+                ),
+                _react2.default.createElement(
+                  'h3',
+                  null,
+                  latestSource,
+                  ' ',
+                  latestTime
+                )
+              ),
+              _react2.default.createElement(
+                'div',
+                { className: 'flex' },
+                _react2.default.createElement(
+                  'div',
+                  null,
+                  _react2.default.createElement(
+                    'h3',
+                    null,
+                    'Open: $',
+                    (0, _addZero2.default)(open)
+                  ),
+                  _react2.default.createElement(
+                    'h3',
+                    null,
+                    'Close: $',
+                    (0, _addZero2.default)(close)
+                  )
+                ),
+                _react2.default.createElement(
+                  'div',
+                  null,
+                  _react2.default.createElement(
+                    'h3',
+                    null,
+                    'High: $',
+                    (0, _addZero2.default)(high)
+                  ),
+                  _react2.default.createElement(
+                    'h3',
+                    null,
+                    'Low: $',
+                    (0, _addZero2.default)(low)
+                  )
+                )
               ),
               _react2.default.createElement(
                 'h3',
                 null,
-                'Close: $',
-                (0, _addZero2.default)(close)
-              )
-            ),
-            _react2.default.createElement(
-              'div',
-              null,
-              _react2.default.createElement(
-                'h3',
-                null,
-                'High: $',
-                (0, _addZero2.default)(high)
+                'P/E:',
+                peRatio
               ),
               _react2.default.createElement(
                 'h3',
                 null,
-                'Low: $',
-                (0, _addZero2.default)(low)
+                '52-wk high: $',
+                (0, _addZero2.default)(week52High)
+              ),
+              _react2.default.createElement(
+                'h3',
+                null,
+                '52-wk low: $',
+                (0, _addZero2.default)(week52Low)
               )
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'right' },
+              _react2.default.createElement(_Chart2.default, { data: newData, dates: dates })
             )
-          ),
-          _react2.default.createElement(
-            'h3',
-            null,
-            'P/E:',
-            peRatio
-          ),
-          _react2.default.createElement(
-            'h3',
-            null,
-            '52-wk high: $',
-            (0, _addZero2.default)(week52High)
-          ),
-          _react2.default.createElement(
-            'h3',
-            null,
-            '52-wk low: $',
-            (0, _addZero2.default)(week52Low)
-          ),
-          _react2.default.createElement(_Chart2.default, { fiveDay: fiveDay })
+          )
         );
       }
     }
@@ -890,10 +910,10 @@ exports.default = getColor;
 
 /***/ }),
 
-/***/ "./client/utils/lastFive.js":
-/*!**********************************!*\
-  !*** ./client/utils/lastFive.js ***!
-  \**********************************/
+/***/ "./client/utils/mapChartData.js":
+/*!**************************************!*\
+  !*** ./client/utils/mapChartData.js ***!
+  \**************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -903,15 +923,41 @@ exports.default = getColor;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-//function takes an array of objects and return the last 5 objects
 
-var lastFive = function lastFive(arr) {
+var _addZero = __webpack_require__(/*! ./addZero */ "./client/utils/addZero.js");
+
+var _addZero2 = _interopRequireDefault(_addZero);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var mapChartData = function mapChartData(arr) {
   var last = arr.length;
   var front = last - 5;
-  return arr.slice(front, last);
-};
+  var lastFive = arr.slice(front, last);
 
-exports.default = lastFive;
+  var dates = [];
+
+  var newData = lastFive.map(function (stock) {
+
+    //creates an array of dates to be used as labels for x-axis of chart
+    var newDate = stock.date.slice(5);
+    dates.push(newDate);
+
+    return {
+      x: stock.date,
+      open: (0, _addZero2.default)(stock.open),
+      close: (0, _addZero2.default)(stock.close),
+      high: (0, _addZero2.default)(stock.high),
+      low: (0, _addZero2.default)(stock.low)
+    };
+  });
+
+  return {
+    newData: newData,
+    dates: dates
+  };
+}; //function takes an array of objects (chart) and return the last 5 objects and parsed date
+exports.default = mapChartData;
 
 /***/ }),
 
@@ -2595,7 +2641,7 @@ exports = module.exports = __webpack_require__(/*! ../node_modules/css-loader/li
 
 
 // module
-exports.push([module.i, "* {\n  margin: 0;\n  padding: 0; }\n\nbody {\n  font-family: Helvetica;\n  margin: 3% 5%; }\n\n.flex {\n  display: flex; }\n\n.baseline {\n  align-items: baseline; }\n\n.home-container h1 {\n  text-align: center; }\n\n.overview-container {\n  display: flex;\n  justify-content: space-between;\n  margin: 0 10%; }\n\n.stock-overview-container {\n  width: 15%;\n  border: solid 0.1rem grey; }\n\n.chart-container {\n  height: 50vh;\n  margin: 0 15%; }\n\n.title-seperator {\n  background-color: #DADADA;\n  height: 1px;\n  margin: 12px 0 20px; }\n\n.red {\n  color: red; }\n\n.green {\n  color: green; }\n\n.grey {\n  color: grey; }\n", ""]);
+exports.push([module.i, "* {\n  margin: 0;\n  padding: 0; }\n\nbody {\n  font-family: Helvetica;\n  margin: 3% 5%; }\n\n.flex {\n  display: flex; }\n\n.baseline {\n  align-items: baseline; }\n\n.home-container h1 {\n  text-align: center; }\n\n.overview-container {\n  display: flex;\n  justify-content: space-between;\n  margin: 0 10%; }\n\n.stock-overview-container {\n  width: 15%;\n  border: solid 0.1rem grey; }\n\n.singlestock-container .left {\n  width: 40%; }\n\n.singlestock-container .right {\n  width: 60%; }\n\n.chart-container {\n  height: 70vh; }\n\n.title-seperator {\n  background-color: #DADADA;\n  height: 1px;\n  margin: 12px 0 20px; }\n\n.red {\n  color: red; }\n\n.green {\n  color: green; }\n\n.grey {\n  color: grey; }\n", ""]);
 
 // exports
 

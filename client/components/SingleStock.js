@@ -7,7 +7,7 @@ import Chart from './Chart';
 import { getStockThunk } from '../redux/stock'
 import addZero from '../utils/addZero';
 import getColor from '../utils/getColor';
-import lastFive from '../utils/lastFive';
+import mapChartData from '../utils/mapChartData';
 
 class SingleStock extends Component {
   constructor(props){
@@ -27,9 +27,11 @@ class SingleStock extends Component {
         </div>
         )
     } else {
+
       const { symbol, companyName, primaryExchange, latestSource, latestTime, open, close, high, low, latestPrice, change, changePercent, peRatio, week52High, week52Low} = this.props.quote
       const colorClass = getColor(change)
-      const fiveDay = lastFive(this.props.chart);
+      const { newData, dates } = mapChartData(this.props.chart);
+
       return (
           <div className='singlestock-container'>
             <Link to='/'>&larr; Back</Link>
@@ -39,26 +41,35 @@ class SingleStock extends Component {
             </div>
 
             <div className='title-seperator'></div>
-            
-            <div className='flex baseline'>
-              <h2>${addZero(latestPrice)} <span className={colorClass}>({change}) {changePercent}%</span></h2>
-              <h3>{latestSource} {latestTime}</h3>
-            </div> 
-            <div className='flex'>
-              <div>
-                <h3>Open: ${addZero(open)}</h3>
-                <h3>Close: ${addZero(close)}</h3>
-              </div>
-              <div>
-                <h3>High: ${addZero(high)}</h3>
-                <h3>Low: ${addZero(low)}</h3>
-              </div>
-            </div>
-            <h3>P/E:{peRatio}</h3>
-            <h3>52-wk high: ${addZero(week52High)}</h3>
-            <h3>52-wk low: ${addZero(week52Low)}</h3>
 
-            <Chart fiveDay={fiveDay} />
+            <div className='singlestock-main flex'>
+
+              <div className='left'>
+                <div className='flex baseline'>
+                  <h2>${addZero(latestPrice)} <span className={colorClass}>({change}) {changePercent}%</span></h2>
+                  <h3>{latestSource} {latestTime}</h3>
+                </div> 
+                <div className='flex'>
+                  <div>
+                    <h3>Open: ${addZero(open)}</h3>
+                    <h3>Close: ${addZero(close)}</h3>
+                  </div>
+                  <div>
+                    <h3>High: ${addZero(high)}</h3>
+                    <h3>Low: ${addZero(low)}</h3>
+                  </div>
+                </div>
+                <h3>P/E:{peRatio}</h3>
+                <h3>52-wk high: ${addZero(week52High)}</h3>
+                <h3>52-wk low: ${addZero(week52Low)}</h3>
+              </div>
+
+              <div className='right'>
+                <Chart data={newData} dates={dates}/>
+              </div>
+
+            </div>
+
           </div>
       )
     }
