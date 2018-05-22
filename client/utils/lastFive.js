@@ -3,7 +3,7 @@
 const lastFive = (arr) => {
   let last = arr.length;
   let front = last - 5;
-  return arr.slice(front,last)
+  return arr.slice(front, last)
 }
 
 export default lastFive;

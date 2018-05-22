@@ -28,7 +28,7 @@ class SingleStock extends Component {
     } else {
       const { symbol, companyName, primaryExchange, latestSource, latestTime, open, close, high, low, latestPrice, change, changePercent, peRatio, week52High, week52Low} = this.props.quote
       const colorClass = getColor(change)
-      console.log(lastFive(this.props.chart))
+      const fiveDay = lastFive(this.props.chart);
       return (
           <div>
             <h1>{companyName}</h1>
@@ -43,7 +43,7 @@ class SingleStock extends Component {
             <h3>52-wk high: ${addZero(week52High)}</h3>
             <h3>52-wk low: ${addZero(week52Low)}</h3>
 
-            <Chart />
+            <Chart fiveDay={fiveDay} />
           </div>
       )
     }
